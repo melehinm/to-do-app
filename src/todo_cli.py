@@ -1,10 +1,16 @@
+# This avoids global paths, in case anyone else wants to use it, or in case
+# I move to a different location / system
+import os
+DATA_DIR = os.path.join(os.path.dirname(__file__), "../data")
+TODO_FILE = os.path.join(DATA_DIR, "todos.txt")
+
 def main():
 	"""This is our main function, no other purpose, other than being there
 	like in C"""
 	
 	# Make a variable for unique id of a task
 	global task_id
-	with open("list.txt") as file:
+	with open(TODO_FILE) as file:
 		task_id = len(file.readlines())
 
 	# List of possible commands
@@ -68,7 +74,7 @@ def remove_value():
 			break
 	
 	# Get current list into as list :)	
-	with open("list.txt") as file:
+	with open(TODO_FILE) as file:
 		lines = file.readlines()
 	
 	# Change IDs of everything past the item to -1	
@@ -80,7 +86,7 @@ def remove_value():
 	task_id -= 1		
 	
 	# Rewrite the file with new list
-	with open("list.txt", "w") as file:
+	with open(TODO_FILE, "w") as file:
 		for line in lines:
 			file.write(line)
 	
@@ -106,14 +112,14 @@ def add_value():
 	print("Task added!\n")
 		
 	# Add task to the list in format: id / task / deadline
-	with open("list.txt", "a") as file:
+	with open(TODO_FILE, "a") as file:
 		file.write(f"{task_id}: {task} - {deadline}\n")
 
 def print_list():
 	""" Print out the current list """
 	
 	# Print every line
-	with open("list.txt", "r") as file:
+	with open(TODO_FILE) as file:
 		print("\n\n", "TO-DO LIST\n", "-" * 40, "\n")
 		for line in file:
 			print("", line)
