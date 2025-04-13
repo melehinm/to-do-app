@@ -67,11 +67,14 @@ def remove_value():
 	
 	# Prompt user until item is a viable ID	
 	while True:
-		item = int(input("Which item would you like to remove?\n"))
-		if item not in range(1, task_id + 1):
-			print("ERROR. NO SUCH TASK.\nPlease select an id of a task.\nFormat: id / task / deadline\n")
-		else:
-			break
+		try:
+			item = int(input("Which item would you like to remove?\n"))
+			if item not in range(1, task_id + 1):
+				print("\nERROR. NO SUCH TASK.\nPlease select an id of a task.\nFormat: id / task / deadline\n")
+			else:
+				break
+		except ValueError:
+			print("\nERROR. NO SUCH TASK.\nPlease select an id of a task.\nFormat: id / task / deadline\n")
 	
 	# Get current list into as list :)	
 	with open(TODO_FILE) as file:
