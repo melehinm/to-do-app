@@ -1,4 +1,4 @@
-from todo_db import open_database, add_task, remove_task, show_tasks, close_database
+from todo_db import open_database, add_task, remove_task, show_tasks, close_database, mark_task
 from datetime import datetime, date
 
 def main():
@@ -9,7 +9,7 @@ def main():
 	con, cur = open_database()
 
 	# List of possible commands
-	commands = ["quit", "add", "remove", "show", "help"] 	
+	commands = ["quit", "add", "remove", "mark", "show", "help"] 	
 	
 	# App is always open, unless user wants to close it
 	while True:
@@ -68,6 +68,27 @@ def main():
 						print("\nInvalid ID. Try again.\n")
 	
 				remove_task(con, cur, tasks, display_id)
+			
+			# Mark task as completed		
+			if user_input == "mark":
+				tasks = show_tasks(cur)
+				if len(tasks) == 0:
+					print("\nNo tasks available\n")
+					continue
+	
+				while True:
+					try:
+						display_id = int(input("\nWhich task is completed?\n"))
+						if 1 <= display_id <= len(tasks):
+							break
+						else:
+							print("\nInvalid ID. Try again.\n")
+					except ValueError:
+						print("\nInvalid ID. Try again.\n")
+	
+				mark_task(con, cur, tasks, display_id)
+		
+
 		
 			# Print out the current list
 			if user_input == "show":
@@ -87,6 +108,8 @@ def print_usage():
 	print("Add a task on your to-do list")
 	print("\nremove")
 	print("Remove a task from a list")
+	print("\n mark")
+	print("Mark task as completed - [X]")
 	print("\nshow")
 	print("Prints out your current to-do list")
 	print("-" * 40)

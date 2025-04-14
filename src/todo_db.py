@@ -20,7 +20,8 @@ def open_database():
 		CREATE TABLE IF NOT EXISTS tasks
 		(id INTEGER PRIMARY KEY,
 		task TEXT NOT NULL,
-		deadline TEXT NOT NULL)
+		deadline TEXT NOT NULL,
+		mark TEXT NOT NULL)
 	""")
 	
 	# Get number of tasks
@@ -36,8 +37,8 @@ def close_database(con):
 
 # Add task
 def add_task(con, cur, task, deadline):
-	cur.execute("INSERT INTO tasks (task, deadline) VALUES (?, ?)", 
-				(task, deadline))
+	mark = "[ ]"
+	cur.execute("INSERT INTO tasks (task, deadline, mark) VALUES (?, ?, ?)", 				(task, deadline, mark))
 	con.commit()
 	print(f"Added: {task} (Deadline: {deadline})\n")
 
@@ -53,11 +54,11 @@ def show_tasks(cur):
     
 	display_id = 0
 	print("\n--- Your Tasks ---")
-	print("-" * 40)
+	print("-" * 55)
 	for task in tasks:
 		display_id += 1
-		print(f"ID: {display_id} | Task: {task[1]} | Deadline: {task[2]}")
-	print("-" * 40)
+		print(f" ID: {display_id} | Task: {task[1]} | Deadline: {task[2]} | Done: {task[3]}")
+	print("-" * 55)
 	print("\n")
 
 	return tasks
@@ -72,6 +73,14 @@ def remove_task(con, cur, tasks, display_id):
 	print(f"Removed: {selected_task} | {selected_deadline}\n")
 	con.commit()
 
+# Mark task as complete
+def mark_task(con, cur, tasks, display_id):
+	selected_id = tasks[display_id - 1][0]
+	selected_task = tasks[display_id - 1][1]
+	
+	cur.execute("UPDATE tasks SET mark = '[X]' WHERE id = ?", (selected_id,))
+	print(f"Completed: {selected_task}\n")
+	con.commit()
 
 # TEST CASE
 if __name__ == "__main__":
