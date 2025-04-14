@@ -2,6 +2,11 @@
 
 A command-line to-do list application built with Python and SQLite.
 
+## Note
+
+This is beginner project I built while learning Python.
+The very first, in fact. Feedback welcome!
+
 ## Features
 - Add tasks with deadlines.
 - Mark tasks as completed.
