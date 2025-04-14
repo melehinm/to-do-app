@@ -14,12 +14,14 @@ A command-line to-do list application built with Python and SQLite.
 	```bash
 	git clone https://github.com/yourusername/todo-app.git
 2. Navigate to the project directory:
+	```bash
 	cd todo-app
 
 ## Usage
-Run the application:
+1. Run the application:
+	```bash
 	python3 src/todo_cli.py
-Commands:
+2. Use commands:
 - add: add task
 - remove: remove task
 - mark: mark task as completed
