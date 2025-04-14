@@ -17,10 +17,10 @@ The very first, in fact. Feedback welcome!
 ## Installation
 1. Clone the repository:
 	```bash
-	git clone https://github.com/yourusername/todo-app.git
+	git clone https://github.com/melehinm/to-do-app.git
 2. Navigate to the project directory:
 	```bash
-	cd todo-app
+	cd to-do-app
 
 ## Usage
 1. Run the application:
