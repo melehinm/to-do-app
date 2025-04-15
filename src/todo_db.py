@@ -24,8 +24,6 @@ def open_database():
 		mark TEXT NOT NULL)
 	""")
 	
-	# Get number of tasks
-	tasks = cur.fetchall()	
 	con.commit()
 
 	# Return current connection and a cursor to main
@@ -37,7 +35,10 @@ def close_database(con):
 
 # Add task
 def add_task(con, cur, task, deadline):
+	# Make default mark
 	mark = "[ ]"
+	
+	# Insert user's task
 	cur.execute("INSERT INTO tasks (task, deadline, mark) VALUES (?, ?, ?)", 				(task, deadline, mark))
 	con.commit()
 	print(f"Added: {task} (Deadline: {deadline})\n")
@@ -45,14 +46,19 @@ def add_task(con, cur, task, deadline):
 
 # Print out the table
 def show_tasks(cur):
+	# Get tasks from the DB
 	cur.execute("SELECT * FROM tasks ORDER BY deadline")
 	tasks = cur.fetchall()
     
+	# If list is empty, notify
 	if not tasks:
 		print("\nNo tasks found!\n")
 		return
-    
+   
+	# Make IDs the user will actually see 
 	display_id = 0
+	
+	# Print tasks
 	print("\n--- Your Tasks ---")
 	print("-" * 55)
 	for task in tasks:
@@ -60,24 +66,29 @@ def show_tasks(cur):
 		print(f" ID: {display_id} | Task: {task[1]} | Deadline: {task[2]} | Done: {task[3]}")
 	print("-" * 55)
 	print("\n")
-
+	
+	# Return tasks to later be used for removal and marking
 	return tasks
 
 # Remove tasks
 def remove_task(con, cur, tasks, display_id):
+	# Turn what user selected into DB values
 	selected_id = tasks[display_id - 1][0]
 	selected_task = tasks[display_id - 1][1]
 	selected_deadline = tasks[display_id - 1][2]
 	
+	# Delete task from the table
 	cur.execute("DELETE FROM tasks WHERE id = ?", (selected_id,))
 	print(f"Removed: {selected_task} | {selected_deadline}\n")
 	con.commit()
 
 # Mark task as complete
 def mark_task(con, cur, tasks, display_id):
+	# Turn what user selected into DB values
 	selected_id = tasks[display_id - 1][0]
 	selected_task = tasks[display_id - 1][1]
-	
+
+	# Mark task as completed - [X]
 	cur.execute("UPDATE tasks SET mark = '[X]' WHERE id = ?", (selected_id,))
 	print(f"Completed: {selected_task}\n")
 	con.commit()
